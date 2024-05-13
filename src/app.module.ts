@@ -9,8 +9,9 @@ import { BlogService } from './blog/blog.service';
 import { BlogController } from './blog/blog.controller';
 import { Blog, BlogSchema } from './blog/blog.schema';
 @Module({
-  imports: [MongooseModule.forRoot(process.env.MONGODB_URI),
+  imports: [
     ConfigModule.forRoot({isGlobal: true, envFilePath: ".env"}),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
     MongooseModule.forFeature([{name: Blog.name, schema: BlogSchema}])
   ],
   controllers: [AppController, UserController, BlogController],
