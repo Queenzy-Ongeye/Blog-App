@@ -1,16 +1,21 @@
-import { Body, Controller, Delete, Get, Param, Post, HttpException, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, HttpException, HttpStatus, UseGuards, Req } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dtos/create.dto';
 import { UpdateBlogDto } from './dtos/update.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('blog')
 export class BlogController {
     constructor(private blogService: BlogService) { }
 
+    @UseGuards(JwtAuthGuard)
     @Post("create")
-    async create(@Body() body: CreateBlogDto) {
+    async create(@Body() body: CreateBlogDto, @Req() req) {
         try {
-            const createResponse = await this.blogService.create(body);
+            const createResponse = await this.blogService.create({
+                ...body, 
+                userId:req.user?.userId
+            });
             return createResponse;
         } catch (err) {
             throw new HttpException(
