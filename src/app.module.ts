@@ -9,6 +9,7 @@ import { BlogService } from './blog/blog.service';
 import { BlogController } from './blog/blog.controller';
 import { Blog, BlogSchema } from './blog/blog.schema';
 import { UserSchema } from './user/user.schema';
+import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
     ConfigModule.forRoot({isGlobal: true, envFilePath: ".env"}),
@@ -16,7 +17,13 @@ import { UserSchema } from './user/user.schema';
     MongooseModule.forFeature([
       {name: Blog.name, schema: BlogSchema}, 
       {name: UserService.name, schema: UserSchema}
-    ])
+    ]),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: {
+        expiresIn: "2 days"
+      }
+    })
   ],
   controllers: [AppController, UserController, BlogController],
   providers: [AppService, UserService, BlogService],
