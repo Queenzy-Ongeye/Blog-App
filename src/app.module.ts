@@ -10,6 +10,7 @@ import { BlogController } from './blog/blog.controller';
 import { Blog, BlogSchema } from './blog/blog.schema';
 import { UserSchema } from './user/user.schema';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './auth/jwt.strategy';
 @Module({
   imports: [
     ConfigModule.forRoot({isGlobal: true, envFilePath: ".env"}),
@@ -26,6 +27,6 @@ import { JwtModule } from '@nestjs/jwt';
     })
   ],
   controllers: [AppController, UserController, BlogController],
-  providers: [AppService, UserService, BlogService],
+  providers: [AppService, UserService, BlogService, JwtStrategy],
 })
 export class AppModule {}
